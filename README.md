@@ -7,7 +7,7 @@ ontology
 1) Исходные данные 
 
 Источник: http://basicdata.ru/download/zipcode/
-Файл с исходными данными: data.csv
+Файл с исходными данными: data.xlsx
 
 2) Данные в формате turtle: test_full.ttl
 
