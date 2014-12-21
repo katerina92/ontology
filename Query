@@ -1,0 +1,8 @@
+PREFIX ps:<http://schema.org/PostOffice/>
+PREFIX adr:<http://www.schema.org/PostalAddress/>
+SELECT ?sa ?pc WHERE {
+  ?x ps:name ?name.
+  ?x ps:address ?a.
+  ?a adr:streetAddress ?sa;
+      adr:postalCode ?pc
+}
