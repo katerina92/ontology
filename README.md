@@ -20,3 +20,4 @@ ontology
 3) Используемые онтологии: Schema: http://schema.org/
 
 4) Примеры sparql запросов: Query
+5) Исходники парсера: Parser.cs
