@@ -9,6 +9,8 @@ ontology
 Источник: http://basicdata.ru/download/zipcode/
 Файл с исходными данными: data.xlsx
 
+Коодинаты почтовых отделений: https://maps.googleapis.com/maps/api/geocode/
+
 2) Данные в формате turtle: test_full.ttl
 
 Пример ресурса в rdf-формате:
