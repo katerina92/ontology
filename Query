@@ -1,5 +1,5 @@
 PREFIX ps:<http://schema.org/PostOffice/>
-PREFIX adr:<http://www.schema.org/PostalAddress/>
+PREFIX adr:<http://schema.org/PostalAddress/>
 SELECT ?sa ?pc WHERE {
   ?x ps:name ?name.
   ?x ps:address ?a.
@@ -23,3 +23,20 @@ SELECT * WHERE {
   ?g loc:latitude ?lat;
       loc:longtitude ?lng.
 }
+
+
+PREFIX ps:<http://schema.org/PostOffice/>
+PREFIX adr:<http://schema.org/PostalAddress/>
+PREFIX plc:<http://schema.org/Place/>
+PREFIX loc:<http://schema.org/GeoCoordinates/>
+
+SELECT ?sa ?lat ?lng WHERE {
+  ?x ps:name ?name.
+  ?x ps:address ?a.
+  ?a adr:streetAddress ?sa;
+      adr:postalCode ?pc.
+  ?x ps:location ?lc.
+  ?lc plc:geo ?g.
+  ?g loc:latitude ?lat;
+      loc:longtitude ?lng.
+FILTER (?pc = "140763") .
