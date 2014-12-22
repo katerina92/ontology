@@ -6,3 +6,20 @@ SELECT ?sa ?pc WHERE {
   ?a adr:streetAddress ?sa;
       adr:postalCode ?pc
 }
+
+
+PREFIX ps:<http://schema.org/PostOffice/>
+PREFIX adr:<http://schema.org/PostalAddress/>
+PREFIX plc:<http://schema.org/Place/>
+PREFIX loc:<http://schema.org/GeoCoordinates/>
+
+SELECT * WHERE {
+  ?x ps:name ?name.
+  ?x ps:address ?a.
+  ?a adr:streetAddress ?sa;
+      adr:postalCode ?pc.
+  ?x ps:location ?lc.
+  ?lc plc:geo ?g.
+  ?g loc:latitude ?lat;
+      loc:longtitude ?lng.
+}
