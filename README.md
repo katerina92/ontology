@@ -84,5 +84,6 @@ conf:fixUnescapedCharacters "(),'!$&*+;=@";
 ];
 .
 
+
 запускаем пабби командой:
 java -jar start.jar
