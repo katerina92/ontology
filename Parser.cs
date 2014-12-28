@@ -16,12 +16,13 @@ namespace ConsoleApplication1
         public String Address { get; set; }
         public String PostalCode { get; set; }
 
-        private String[] phone;
+        private String[] phone = new String[0];
+        public String[] Phones { get { return phone; } }
         public String Phone
         {
             get
             {
-                if (phone == null || phone.Length < 1)
+                if (Phone.Length < 1)
                     return String.Empty;
                 StringBuilder res = new StringBuilder(phone[0]);
                 for (int i = 1; i < phone.Length; i++)
@@ -72,14 +73,14 @@ namespace ConsoleApplication1
             return data.Substring(n + field.Length + 1).Trim();
         }
 
-        public String GetString(String propertyName, String value)
+        public String GetString(String propertyName, String value, String endValue = ";")
         {
-            return new StringBuilder().Append(Prefix).Append(propertyName).Append(' ').Append('\"').Append(value).Append("\";").ToString();
+            return new StringBuilder().Append(Prefix).Append(propertyName).Append(' ').Append('\"').Append(value).Append('\"').Append(endValue).ToString();
         }
 
-        public override string ToString()
+        public string ToString(Boolean includePhone)
         {
-            StringBuilder result = new StringBuilder("[").AppendLine();
+            StringBuilder result = new StringBuilder();
             if (!String.IsNullOrEmpty(PostalCode))
                 result.AppendLine(GetString("postalCode", PostalCode));
             if (!String.IsNullOrEmpty(Region))
@@ -88,14 +89,12 @@ namespace ConsoleApplication1
                 result.AppendLine(GetString("addressLocality", Locality));
             if (!String.IsNullOrEmpty(Address))
                 result.AppendLine(GetString("streetAddress", Address));
-            if (!String.IsNullOrEmpty(Phone))
+            if (includePhone && Phones.Length > 0)
             {
-                for (int i = 0; i < phone.Length; i++)
-                    result.AppendLine(GetString("telephone", phone[i]));
+                for (int i = 0; i < Phone.Length; i++)
+                    result.AppendLine(GetString("telephone", Phones[i]));
             }
-
-            result.Append(Prefix).Append("addressCountry").Append(' ').Append('\"').Append(Country).AppendLine("\"").Append(']');
-            return result.ToString();
+            return result.AppendLine(GetString("addressCountry", Country, ".")).ToString();
 
         }
     }
@@ -109,7 +108,7 @@ namespace ConsoleApplication1
                 {
                     DataSource = "(local)",
                     IntegratedSecurity = true,
-                    InitialCatalog = "ska2014_autumn"
+                    InitialCatalog = "d_zipcode_info"
                 }.ConnectionString
                 ))
             {
@@ -117,27 +116,49 @@ namespace ConsoleApplication1
                 using (SqlCommand cmd = new SqlCommand())
                 {
                     cmd.Connection = cn;
-                    cmd.CommandText = "SELECT top 5 zipcode, name, address, phone" +
+                    cmd.CommandText = "SELECT zipcode, name, address, phone, longtitude, lattitude" +
                                     "  FROM d_zipcode_info(nolock)" +
-                                    "  /*WHERE address like '%область%'*/"+
+                                    " WHERE longtitude is not null and lattitude is not null" +
                                  " ORDER BY zipcode";
                     using (var dr = cmd.ExecuteReader())
                     {
-                        using (var sr = new StreamWriter(File.Open("C:\\Users\\Ivan V. Kaurov\\Desktop\\Gmail\\test_small.ttl", FileMode.Create), Encoding.UTF8))
+                        using (var sr = new StreamWriter(File.Open("C:\\Users\\Ivan V. Kaurov\\Desktop\\Gmail\\test_full.ttl", FileMode.Create), Encoding.UTF8))
                         {
-                            sr.Write(@"
-@prefix post: <http://localhost:8080/resource/index/>.
-@prefix ps: <http://schema.org/PostOffice/>.
-@prefix adr: <http://www.schema.org/PostalAddress/>.
+                            sr.Write(@"@prefix post: <http://localhost:8080/resource/index/>
+@prefix scm: <http://schema.org/>
+@prefix adr: <http://localhost:8080/resource/address/>
+@prefix plc: <http://localhost:8080/resource/place/>
+@prefix crd: <http://localhost:8080/resource/coordinates/>
 ");
 
                             while (dr.Read())
                             {
-                                sr.Write("{0}post:{1}{0}  ps:name \"{2}\";{0}  ps:address {3}.",
+                                var adr = new postalAddress("  scm", dr["zipcode"].ToString(), dr["address"].ToString()) { Phone = dr["phone"] as String };
+                                sr.Write(@"
+post:{0}
+  a             scm:PostOffice;
+  scm:name      " + "\"{1}\";", dr["zipcode"], dr["name"]);
+                                for (int i = 0; i < adr.Phones.Length; i++) {
+                                    sr.Write("{0}  scm:telephone \"{1}\";",Environment.NewLine, adr.Phones[i]);
+                                }
+                                sr.Write(@"
+  scm:address   adr:{0};
+  scm:location  plc:{0}.
+plc:{0}
+  a       scm:Place;
+  scm:geo crd:{0}.
+crd:{0}
+  a             scm:GeoCoordinates;
+  scm:latitude  " + "\"{1}\"" + @";
+  scm:longitude " + "\"{2}\"" + @".
+adr:{0}
+{3}", dr["zipcode"], dr["lattitude"], dr["longtitude"], adr.ToString(false));
+                                /*sr.WriteLine()
+                                sr.Write("{0}post:{1}{0}  ps:name \"{2}\";{0}  ps:address {3};{0}  ps:location [{0}    plc:geo[{0}      loc:latitude \"{4}\";{0}      loc:longtitude \"{5}\"{0}    ]{0}  ].",
                                     Environment.NewLine, dr["zipcode"], dr["name"], new postalAddress("    " + "adr", dr["zipcode"].ToString(), dr["address"].ToString())
                                     {
                                         Phone = dr["phone"].ToString()
-                                    });
+                                    }, dr["lattitude"], dr["longtitude"]);*/
                             }
                         }
                     }
