@@ -1,42 +1,46 @@
-PREFIX ps:<http://schema.org/PostOffice/>
-PREFIX adr:<http://schema.org/PostalAddress/>
+prefix post: <http://localhost:8080/resource/index/>
+prefix scm: <http://schema.org/>
+prefix adr: <http://localhost:8080/resource/address/>
+prefix plc: <http://localhost:8080/resource/place/>
+prefix crd: <http://localhost:8080/resource/coordinates/>
 SELECT ?sa ?pc WHERE {
-  ?x ps:name ?name.
-  ?x ps:address ?a.
-  ?a adr:streetAddress ?sa;
-      adr:postalCode ?pc
+  ?x scm:name ?name.
+  ?x scm:address ?a.
+  ?a scm:streetAddress ?sa;
+      scm:postalCode ?pc
 }
 
 
-PREFIX ps:<http://schema.org/PostOffice/>
-PREFIX adr:<http://schema.org/PostalAddress/>
-PREFIX plc:<http://schema.org/Place/>
-PREFIX loc:<http://schema.org/GeoCoordinates/>
-
+prefix post: <http://localhost:8080/resource/index/>
+prefix scm: <http://schema.org/>
+prefix adr: <http://localhost:8080/resource/address/>
+prefix plc: <http://localhost:8080/resource/place/>
+prefix crd: <http://localhost:8080/resource/coordinates/>
 SELECT * WHERE {
-  ?x ps:name ?name.
-  ?x ps:address ?a.
-  ?a adr:streetAddress ?sa;
-      adr:postalCode ?pc.
-  ?x ps:location ?lc.
-  ?lc plc:geo ?g.
-  ?g loc:latitude ?lat;
-      loc:longtitude ?lng.
+  ?x scm:name ?name.
+  ?x scm:address ?a.
+  ?a scm:streetAddress ?sa;
+      scm:postalCode ?pc.
+  ?x scm:location ?lc.
+  ?lc scm:geo ?g.
+  ?g scm:latitude ?lat;
+      scm:longitude ?lng.
 }
 
 
-PREFIX ps:<http://schema.org/PostOffice/>
-PREFIX adr:<http://schema.org/PostalAddress/>
-PREFIX plc:<http://schema.org/Place/>
-PREFIX loc:<http://schema.org/GeoCoordinates/>
-
+prefix post: <http://localhost:8080/resource/index/>
+prefix scm: <http://schema.org/>
+prefix adr: <http://localhost:8080/resource/address/>
+prefix plc: <http://localhost:8080/resource/place/>
+prefix crd: <http://localhost:8080/resource/coordinates/>
 SELECT ?sa ?lat ?lng WHERE {
-  ?x ps:name ?name.
-  ?x ps:address ?a.
-  ?a adr:streetAddress ?sa;
-      adr:postalCode ?pc.
-  ?x ps:location ?lc.
-  ?lc plc:geo ?g.
-  ?g loc:latitude ?lat;
-      loc:longtitude ?lng.
+  ?x scm:name ?name.
+  ?x scm:address ?a.
+  ?a scm:streetAddress ?sa;
+      scm:postalCode ?pc.
+  ?x scm:location ?lc.
+  ?lc scm:geo ?g.
+  ?g scm:latitude ?lat;
+      scm:longitude ?lng.
 FILTER (?pc = "140763") .
+}
