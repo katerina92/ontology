@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:j.0="http://schema.org/"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/">
+  <j.0:PostOffice rdf:about="http://localhost:8080/resource/index/101000">
+    <j.0:name>МОСКВА</j.0:name>
+    <j.0:telephone>(495) 623-37-48</j.0:telephone>
+    <j.0:telephone>(495) 624-06-78</j.0:telephone>
+    <j.0:telephone>(495) 623-16-57</j.0:telephone>
+    <j.0:address rdf:resource="http://localhost:8080/resource/address/101000"/>
+    <j.0:location rdf:resource="http://localhost:8080/resource/place/101000"/>
+  </j.0:PostOffice>
+  <rdf:Description rdf:about="http://localhost:8080/data/index/101000?output=xml">
+    <rdfs:label>RDF description of </rdfs:label>
+    <foaf:primaryTopic rdf:resource="http://localhost:8080/resource/index/101000"/>
+  </rdf:Description>
+</rdf:RDF>
