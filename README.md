@@ -11,15 +11,13 @@ ontology
 
 2) Данные в формате turtle: test_full.ttl
 
-Пример ресурса в rdf-формате:
+3) Пример ресурса в rdf-формате: exmpl
 
+4) Используемые онтологии: Schema: http://schema.org/
 
+5) Примеры sparql запросов: Query
 
-3) Используемые онтологии: Schema: http://schema.org/
-
-4) Примеры sparql запросов: Query
-
-Настройка фусеки и пабби:
+6) Настройка фусеки и пабби:
 качаем фусеки по инструкции - https://github.com/ailabitmo/semweb-course/tree/master/example-1
 далее, кидаем файл test_full.ttl в папку с фусеки и вводим в терминале:
 ./fuseki-server --file=test_full.ttl /ds
